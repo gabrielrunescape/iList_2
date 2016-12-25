@@ -32,10 +32,10 @@ CREATE TABLE IF NOT EXISTS `Orcamento` (
 );
 
 -- INSERT REGION ON TABLES `Status` AND `Unidade` --
-INSERT INTO Status (ID, Descricao, Abreviacao) VALUES (NULL, 'À comprar');
-INSERT INTO Status (ID, Descricao, Abreviacao) VALUES (NULL, 'Orçamento feito');
-INSERT INTO Status (ID, Descricao, Abreviacao) VALUES (NULL, 'Comprado');
+INSERT INTO `Status` (ID, Descricao) VALUES (NULL, 'À comprar');
+INSERT INTO `Status` (ID, Descricao) VALUES (NULL, 'Orçamento feito');
+INSERT INTO `Status` (ID, Descricao) VALUES (NULL, 'Comprado');
 
-INSERT INTO `Unidade` VALUES (NULL, 'Metro', 'm');
-INSERT INTO `Unidade` VALUES (NULL, 'Peça', 'pc');
-INSERT INTO `Unidade` VALUES (NULL, 'Unidade', 'un');
+INSERT INTO `Unidade` (ID, Descricao, Abreviacao) VALUES (NULL, 'Metro', 'm');
+INSERT INTO `Unidade` (ID, Descricao, Abreviacao) VALUES (NULL, 'Peça', 'pc');
+INSERT INTO `Unidade` (ID, Descricao, Abreviacao) VALUES (NULL, 'Unidade', 'un');

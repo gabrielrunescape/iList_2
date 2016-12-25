@@ -4,14 +4,12 @@ import java.util.List;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
-import java.util.ArrayList;
 import ilist.gabrielrunescape.com.br.R;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AppCompatActivity;
+import ilist.gabrielrunescape.com.br.dao.ItemDAO;
 import ilist.gabrielrunescape.com.br.object.Item;
-import ilist.gabrielrunescape.com.br.object.Status;
-import ilist.gabrielrunescape.com.br.object.Unidade;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import ilist.gabrielrunescape.com.br.adapter.ItemAdapter;
@@ -25,6 +23,7 @@ import android.support.design.widget.FloatingActionButton;
  * @since 2016-12-25
  */
 public class HomeActivity extends AppCompatActivity {
+    private ItemDAO dao;
     private RecyclerView recyclerView;
     private FloatingActionButton floatingButton;
     private static String TAG = HomeActivity.class.getSimpleName();
@@ -41,8 +40,11 @@ public class HomeActivity extends AppCompatActivity {
 
         Log.i(TAG, "Criando e carregando elementos da ActivityView ...");
 
+        dao = new ItemDAO(this);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         floatingButton = (FloatingActionButton) findViewById(R.id.floatingButton);
+
+        dao.open(false);
     }
 
     @Override
@@ -50,6 +52,7 @@ public class HomeActivity extends AppCompatActivity {
      * (Re)carrega todos os elementos da view após criar, pausar ou destruir a ActivityView.
      */
     protected void onResume() {
+        dao.open(false);
         super.onResume();
 
         try {
@@ -58,18 +61,7 @@ public class HomeActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-            List<Item> list = new ArrayList<>();
-
-            for (int i = 0; i < 11; i++) {
-                Item item = new Item();
-
-                item.setNome("Parafernalha");
-                item.setQuantidade(i + 2);
-                item.setStatus(new Status(i, "Comprado"));
-                item.setUnidade(new Unidade("Unidade", "un"));
-
-                list.add(item);
-            }
+            List<Item> list = dao.getAll();
 
             ItemAdapter adapter = new ItemAdapter(list);
             recyclerView.setAdapter(adapter);
