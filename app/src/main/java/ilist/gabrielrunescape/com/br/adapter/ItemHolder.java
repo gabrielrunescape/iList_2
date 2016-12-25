@@ -1,17 +1,16 @@
 package ilist.gabrielrunescape.com.br.adapter;
 
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.TextView;
 import ilist.gabrielrunescape.com.br.R;
-import ilist.gabrielrunescape.com.br.dao.ItemDAO;
-import ilist.gabrielrunescape.com.br.object.Item;
-
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.Snackbar;
+import ilist.gabrielrunescape.com.br.dao.ItemDAO;
+import ilist.gabrielrunescape.com.br.object.Item;
 
 /**
  * Carrega os itens básicos para criar os ItemView da RecycleView.
@@ -22,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
  */
 public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
     public Item item;
+    public ItemAdapter adapter;
     public TextView nome, status;
     private static String TAG = ItemHolder.class.getSimpleName();
 
@@ -44,7 +44,7 @@ public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickL
     /**
      * Ao clicar no item, realiza uma ação.
      *
-     * @param view Item do RecyclerView clicado.
+     * @param v Item do RecyclerView clicado.
      */
     public void onClick(View v) {
         try {
@@ -63,7 +63,6 @@ public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickL
      * Ao pressionar o item, exibe um AlertDialog.
      *
      * @param view Item do RecyclerView pressionado.
-     * @param position Posição da view (item do RecyclerView).
      */
     public boolean onLongClick(final View view) {
         int position = getAdapterPosition();
@@ -104,23 +103,41 @@ public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickL
         }
     }
 
+    /**
+     * Aparece um AlertDialog confirmando a exclusão do Item.
+     *
+     * @param view ItemView do RecyclerView.
+     */
     protected void confirmDelete(final View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setMessage("Deseja apagar " + item.getNome().toLowerCase() + "?");
 
         builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
+            /**
+             * Ao clicar na opção positiva realiza o procedimento de exclusão.
+             *
+             * @param dialog AlertDialog em execução.
+             * @param which Botão escolhido.
+             */
             public void onClick(DialogInterface dialog, int which) {
                 ItemDAO dao = new ItemDAO(view.getContext());
 
                 dao.open(true);
                 dao.delete(item.getID());
-
-                Snackbar.make(view, item.getNome() + " apagado com sucesso!", Snackbar.LENGTH_LONG).show();
+                adapter.removeItem(item);
                 dao.closeDatabase();
+
+                Snackbar.make(view, item.getNome() + " apagado com sucesso!", Snackbar.LENGTH_SHORT).show();
             }
         }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
             @Override
+            /**
+             * Ao clicar na opção negativa, realiza algum procedimento.
+             *
+             * @param dialog AlertDialog em execução.
+             * @param which Botão escolhido.
+             */
             public void onClick(DialogInterface dialog, int which) {
                 Log.i(TAG, "Botão não clicado.");
             }

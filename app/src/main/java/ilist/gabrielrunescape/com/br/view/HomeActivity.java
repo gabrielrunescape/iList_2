@@ -1,6 +1,5 @@
 package ilist.gabrielrunescape.com.br.view;
 
-import java.util.List;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AppCompatActivity;
 import ilist.gabrielrunescape.com.br.dao.ItemDAO;
-import ilist.gabrielrunescape.com.br.object.Item;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import ilist.gabrielrunescape.com.br.adapter.ItemAdapter;
@@ -25,6 +24,7 @@ import android.support.design.widget.FloatingActionButton;
 public class HomeActivity extends AppCompatActivity {
     private ItemDAO dao;
     private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeContainer;
     private FloatingActionButton floatingButton;
     private static String TAG = HomeActivity.class.getSimpleName();
 
@@ -40,11 +40,14 @@ public class HomeActivity extends AppCompatActivity {
 
         Log.i(TAG, "Criando e carregando elementos da ActivityView ...");
 
-        dao = new ItemDAO(this);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         floatingButton = (FloatingActionButton) findViewById(R.id.floatingButton);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
-        dao.open(false);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        swipeContainer.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.holo_orange_light);
     }
 
     @Override
@@ -52,19 +55,10 @@ public class HomeActivity extends AppCompatActivity {
      * (Re)carrega todos os elementos da view após criar, pausar ou destruir a ActivityView.
      */
     protected void onResume() {
-        dao.open(false);
         super.onResume();
 
         try {
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-
-            recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-            List<Item> list = dao.getAll();
-
-            ItemAdapter adapter = new ItemAdapter(list);
-            recyclerView.setAdapter(adapter);
+            updateData();
 
             floatingButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,6 +69,32 @@ public class HomeActivity extends AppCompatActivity {
                  */
                 public void onClick(View view) {
                     Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+            });
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+        }
+    }
+
+    /**
+     * (Re)carrega todos os elementos para o RecyclerView.
+     */
+    public void updateData() {
+        try {
+            dao = new ItemDAO(this);
+            dao.open(false);
+
+            final ItemAdapter adapter = new ItemAdapter(dao.getAll());
+            adapter.notifyDataSetChanged();
+
+            recyclerView.setAdapter(adapter);
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    swipeContainer.setRefreshing(false);
+
+                    adapter.clear();
+                    adapter.addAll(dao.getAll());
                 }
             });
         } catch (Exception ex) {

@@ -72,7 +72,7 @@ public class ItemDAO {
             super.finalize();
 
             if (database != null && database.isOpen()) {
-                Log.i(TAG, "Finalizando banco de dados");
+                Log.i(TAG, "Finalizando banco de dados.");
                 database.close();
             }
         } catch (Throwable ex) {
@@ -84,6 +84,7 @@ public class ItemDAO {
      * Fecha o banco de dados.
      */
     public void closeDatabase() {
+        Log.i(TAG, "Finalizando banco de dados.");
         database.close();
     }
 

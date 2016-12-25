@@ -57,8 +57,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
             Item item = listItens.get(position);
 
             holder.item = item;
-            holder.nome.setText(item.getQuantidade() + " x " + item.getNome());
+            holder.adapter = this;
             holder.status.setText(item.getStatus().getDescrição());
+            holder.nome.setText(item.getQuantidade() + " x " + item.getNome());
 
             switch (holder.status.getText().toString()) {
                 case "À comprar":
@@ -83,5 +84,32 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     @Override
     public int getItemCount() {
         return listItens.size();
+    }
+
+    /**
+     * Adiciona todos os objetos Item em uma lista.
+     *
+     * @param list Lista com os objetos do tipo Item.
+     */
+    public void addAll(List<Item> list) {
+        listItens.addAll(list);
+
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Limpa todos os valores da lista de itens do recyclerView.
+     */
+    public void clear() {
+        listItens.clear();
+
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(Item item) {
+        int position = listItens.indexOf(item);
+
+        listItens.remove(position);
+        notifyItemRemoved(position);
     }
 }
