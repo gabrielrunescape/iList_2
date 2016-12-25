@@ -1,0 +1,17 @@
+<resources>
+
+    <style name="Djezzy" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">@color/colourAccent</item>
+        <item name="colorPrimary">@color/colourPrimary</item>
+        <item name="colorPrimaryDark">@color/colourPrimaryDark</item>
+    </style>
+
+    <style name="Djezzy.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Djezzy.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Djezzy.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
