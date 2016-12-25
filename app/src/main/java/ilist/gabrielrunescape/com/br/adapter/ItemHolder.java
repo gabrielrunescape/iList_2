@@ -1,10 +1,14 @@
 package ilist.gabrielrunescape.com.br.adapter;
 
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.TextView;
 import ilist.gabrielrunescape.com.br.R;
+import ilist.gabrielrunescape.com.br.dao.ItemDAO;
+import ilist.gabrielrunescape.com.br.object.Item;
+
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
  * @since 2016-12-18
  */
 public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public Item item;
     public TextView nome, status;
     private static String TAG = ItemHolder.class.getSimpleName();
 
@@ -68,7 +73,7 @@ public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickL
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder.setTitle("Escolha uma ação");
 
-            String[] options = new String[] {"Apagar", "Editar", "Inserir", "Visualizar"};
+            String[] options = new String[] {"Apagar", "Editar", "Inserir"};
             view.setPressed(true);
 
             builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -81,9 +86,10 @@ public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickL
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                         case 0:
+                            confirmDelete(view);
+                            break;
                         case 1:
                         case 2:
-                        case 3:
                             Toast.makeText(view.getContext(), "Função não programada!", Toast.LENGTH_LONG).show();
                             break;
                     }
@@ -96,5 +102,30 @@ public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickL
 
             return false;
         }
+    }
+
+    protected void confirmDelete(final View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setMessage("Deseja apagar " + item.getNome().toLowerCase() + "?");
+
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ItemDAO dao = new ItemDAO(view.getContext());
+
+                dao.open(true);
+                dao.delete(item.getID());
+
+                Snackbar.make(view, item.getNome() + " apagado com sucesso!", Snackbar.LENGTH_LONG).show();
+                dao.closeDatabase();
+            }
+        }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.i(TAG, "Botão não clicado.");
+            }
+        });
+
+        builder.create().show();
     }
 }

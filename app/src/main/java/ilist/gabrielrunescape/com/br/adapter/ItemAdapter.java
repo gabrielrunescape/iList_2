@@ -55,6 +55,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     public void onBindViewHolder(ItemHolder holder, int position) {
         try {
             Item item = listItens.get(position);
+
+            holder.item = item;
             holder.nome.setText(item.getQuantidade() + " x " + item.getNome());
             holder.status.setText(item.getStatus().getDescrição());
 
