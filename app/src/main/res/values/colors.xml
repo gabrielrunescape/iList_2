@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colourIcon">#FFFFFF</color>
+    <color name="colourDanger">#D9534F</color>
     <color name="colourAccent">#E20612</color>
     <color name="colourPrimary">#E71722</color>
+    <color name="colourWarning">#F0AD4E</color>
+    <color name="colourSuccess">#5CB85C</color>
     <color name="colourPrimaryDark">#D0151F</color>
 </resources>

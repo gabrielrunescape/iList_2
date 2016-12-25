@@ -1,14 +1,20 @@
 package ilist.gabrielrunescape.com.br.view;
 
+import java.util.List;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
+import java.util.ArrayList;
 import ilist.gabrielrunescape.com.br.R;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AppCompatActivity;
+import ilist.gabrielrunescape.com.br.object.Item;
+import ilist.gabrielrunescape.com.br.object.Status;
+import ilist.gabrielrunescape.com.br.object.Unidade;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import ilist.gabrielrunescape.com.br.adapter.ItemAdapter;
 import android.support.design.widget.FloatingActionButton;
 
 /**
@@ -51,6 +57,22 @@ public class HomeActivity extends AppCompatActivity {
 
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            List<Item> list = new ArrayList<>();
+
+            for (int i = 0; i < 11; i++) {
+                Item item = new Item();
+
+                item.setNome("Parafernalha");
+                item.setQuantidade(i + 2);
+                item.setStatus(new Status(i, "Comprado"));
+                item.setUnidade(new Unidade("Unidade", "un"));
+
+                list.add(item);
+            }
+
+            ItemAdapter adapter = new ItemAdapter(list);
+            recyclerView.setAdapter(adapter);
 
             floatingButton.setOnClickListener(new View.OnClickListener() {
                 @Override
