@@ -3,8 +3,8 @@ package ilist.gabrielrunescape.com.br.view;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
+import android.content.Intent;
 import ilist.gabrielrunescape.com.br.R;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AppCompatActivity;
 import ilist.gabrielrunescape.com.br.dao.ItemDAO;
@@ -68,7 +68,8 @@ public class HomeActivity extends AppCompatActivity {
                  * @param view FloatingActionButton clicado.
                  */
                 public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Intent intent = new Intent(HomeActivity.this, ItemActivity.class);
+                    startActivity(intent);
                 }
             });
         } catch (Exception ex) {

@@ -12,5 +12,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".view.ItemActivity" android:parentActivityName=".view.HomeActivity">
+
+        </activity>
     </application>
 </manifest>

@@ -87,12 +87,22 @@ public class Unidade implements Serializable {
         this.ID = ID;
     }
 
-    @Override/**
+    @Override
+    /**
+     * Sobreescreve a função para retornar uma String do Objeto.
+     *
+     * @return Descrição para ArrayAdapter.
+     */
+    public String toString() {
+        return descrição + " - " + abreviação;
+    }
+
+    /**
      * Sobreescreve a função para retornar uma String do Objeto.
      *
      * @return String do objeto no formato JSON.
      */
-    public String toString() {
+    public String toStringJSON() {
         String _return = "Unidade {\n\tID: %d,\n\tDescricao: %s,\n\tAbreviacao: %s\n}";
 
         return String.format(_return, ID, descrição, abreviação);

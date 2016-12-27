@@ -119,6 +119,6 @@ public class Item implements Serializable {
     public String toString() {
         String _return = "Item {\n\tID: %d,\n\tNome: %s,\n\tStatus: %s,\n\tQuantidade: %d,\n\tUnidade: %s\n}";
 
-        return String.format(_return, ID, nome, status.toString().replace("Status ", ""), quantidade, unidade.toString().replace("Unidade ", ""));
+        return String.format(_return, ID, nome, status.toString().replace("Status ", ""), quantidade, unidade.toStringJSON().replace("Unidade ", ""));
     }
 }

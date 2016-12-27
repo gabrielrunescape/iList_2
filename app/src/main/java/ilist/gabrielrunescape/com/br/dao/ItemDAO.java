@@ -116,7 +116,7 @@ public class ItemDAO {
 
             Log.i(TAG, "Inserindo item ... ");
             long id = database.insert("`Item`", null, values);
-            String query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade WHERE ID = \" + i.getID()";
+            String query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade WHERE I.ID = " + id;
 
             Cursor cursor = database.rawQuery(query , null);
             cursor.moveToFirst();
