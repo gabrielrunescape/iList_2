@@ -1,30 +1,26 @@
 package ilist.gabrielrunescape.com.br.view;
 
-import java.util.List;
-
-import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.text.method.HideReturnsTransformationMethod;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.app.AlertDialog;
 import android.widget.EditText;
 import android.widget.ArrayAdapter;
+import android.content.DialogInterface;
 import ilist.gabrielrunescape.com.br.R;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
-
 import ilist.gabrielrunescape.com.br.dao.ItemDAO;
-import ilist.gabrielrunescape.com.br.dao.UnidadeDAO;
 import ilist.gabrielrunescape.com.br.object.Item;
 import ilist.gabrielrunescape.com.br.object.Status;
 import ilist.gabrielrunescape.com.br.object.Unidade;
+import ilist.gabrielrunescape.com.br.dao.UnidadeDAO;
 
 /**
  * É uma extensora da classe Activity(AppCompatActivity) que realiza funções de criar, inicializar
@@ -66,6 +62,7 @@ public class ItemActivity extends AppCompatActivity {
 
         dao.open(false);
         Log.i(TAG, "Método onCreate()");
+        et_Quantidade.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
     }
 
     @Override
@@ -81,6 +78,8 @@ public class ItemActivity extends AppCompatActivity {
 
             adapter = dao.getArrayAdapter(this);
             spinner.setAdapter(adapter);
+
+            loadViews();
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
         }
@@ -135,15 +134,30 @@ public class ItemActivity extends AppCompatActivity {
      * Método usado para implementar a exclusão de um item fora do método onOptionsItemSelected().
      */
     public void deleteItem() {
-        ItemDAO dao = new ItemDAO(this);
-        int id = ((Item) getIntent().getSerializableExtra("Item")).getID();
+        final int id = ((Item) getIntent().getSerializableExtra("Item")).getID();
 
-        dao.open(true);
-        dao.delete(id);
-        dao.closeDatabase();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Confirmar exclusão?");
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ItemDAO dao = new ItemDAO(ItemActivity.this);
+                dao.open(true);
 
-        Toast.makeText(this, "Item apagado com sucesso!", Toast.LENGTH_SHORT).show();
-        finish();
+                dao.delete(id);
+                dao.closeDatabase();
+
+                Toast.makeText(ItemActivity.this, "Item apagado com sucesso!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.create().show();
     }
 
     /**
@@ -189,31 +203,37 @@ public class ItemActivity extends AppCompatActivity {
         }
     }
 
-    /*protected void loadViews() {
+    protected void loadViews() {
         try {
-            final FragmentManager support = getFragmentManager();
+            /*final FragmentManager support = getFragmentManager();
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
             recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setItemAnimator(new DefaultItemAnimator());*/
 
             if (getIntent().getSerializableExtra("Item") != null) {
+                int position = 0;
                 Item i = (Item) getIntent().getSerializableExtra("Item");
 
-                itens = orcamento.getAllFromItens(i.getID());
+                for (int j = 0; j < adapter.getCount(); j++) {
+                    if (adapter.getItem(j).getID() == i.getUnidade().getID()) {
+                        position = j;
+                        break;
+                    }
+                }
 
                 et_Nome.setText(i.getNome());
                 et_Quantidade.setText(i.getQuantidade() + "");
-                spinner.setSelection(Integer.parseInt(i.getUnidade()) - 1);
+                spinner.setSelection(position);
 
-                OrcamentoAdapter idapter = new OrcamentoAdapter(itens);
-                recyclerView.setAdapter(idapter);
+                /*OrcamentoAdapter idapter = new OrcamentoAdapter(itens);
+                recyclerView.setAdapter(idapter);*/
             } else {
                 recyclerView.setVisibility(View.INVISIBLE);
                 btn_orcamento.setVisibility(View.INVISIBLE);
             }
 
-            btn_orcamento.setOnClickListener(new View.OnClickListener() {
+            /*btn_orcamento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
@@ -225,9 +245,9 @@ public class ItemActivity extends AppCompatActivity {
                         Log.e(TAG, ex.getMessage());
                     }
                 }
-            });
+            });*/
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
         }
-    }*/
+    }
 }

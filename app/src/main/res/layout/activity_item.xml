@@ -25,7 +25,7 @@
         <EditText
             android:layout_weight="0.3"
             android:id="@+id/et_quantidade"
-            android:inputType="numberSigned"
+            android:inputType="numberPassword"
             android:layout_width="wrap_content"
             android:hint="@string/et_quantidade"
             android:layout_height="wrap_content" />

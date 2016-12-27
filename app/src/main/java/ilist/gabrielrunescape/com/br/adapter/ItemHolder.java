@@ -3,6 +3,7 @@ package ilist.gabrielrunescape.com.br.adapter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import android.content.Intent;
 import android.widget.TextView;
 import ilist.gabrielrunescape.com.br.R;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.Snackbar;
 import ilist.gabrielrunescape.com.br.dao.ItemDAO;
 import ilist.gabrielrunescape.com.br.object.Item;
+import ilist.gabrielrunescape.com.br.view.ItemActivity;
 
 /**
  * Carrega os itens básicos para criar os ItemView da RecycleView.
@@ -52,6 +54,11 @@ public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickL
 
             if (position != RecyclerView.NO_POSITION) {
                 Log.i(TAG, String.format("O item nº %1$d foi clicado!", position + 1));
+
+                Intent intent = new Intent(v.getContext(), ItemActivity.class);
+                intent.putExtra("Item", item);
+
+                v.getContext().startActivity(intent);
             }
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
@@ -83,13 +90,18 @@ public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickL
                  * @param which  Posição do item clicado.
                  */
                 public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(view.getContext(), ItemActivity.class);
+
                     switch (which) {
                         case 0:
                             confirmDelete(view);
                             break;
                         case 1:
+                            intent.putExtra("Item", item);
+
+                            view.getContext().startActivity(intent);
                         case 2:
-                            Toast.makeText(view.getContext(), "Função não programada!", Toast.LENGTH_LONG).show();
+                            view.getContext().startActivity(intent);
                             break;
                     }
                 }
