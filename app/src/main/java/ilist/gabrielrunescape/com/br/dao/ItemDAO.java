@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.content.ContentValues;
 import android.database.SQLException;
+import ilist.gabrielrunescape.com.br.R;
 import android.database.sqlite.SQLiteDatabase;
 import ilist.gabrielrunescape.com.br.object.Item;
 import ilist.gabrielrunescape.com.br.object.Status;
@@ -158,7 +159,7 @@ public class ItemDAO {
 
             Log.i(TAG, "Alterando item ... ");
             database.update("`Item`", values, "ID = " + i.getID(), null);
-            String query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade WHERE ID = \" + i.getID()";
+            String query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade WHERE I.ID = " + i.getID();
 
             Cursor cursor = database.rawQuery(query , null);
             cursor.moveToFirst();
@@ -191,6 +192,63 @@ public class ItemDAO {
     public List<Item> getAll() {
         List<Item> item = new ArrayList<>();
         String query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade";
+
+        Cursor cursor = database.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            while (!cursor.isAfterLast()) {
+                Item i = new Item();
+
+                i.setID(cursor.getInt(0));
+                i.setNome(cursor.getString(1));
+                i.setQuantidade(cursor.getInt(2));
+                i.setStatus(new Status(cursor.getInt(3), cursor.getString(4)));
+                i.setUnidade(new Unidade(cursor.getInt(5), cursor.getString(6), cursor.getString(7)));
+
+                item.add(i);
+                cursor.moveToNext();
+
+                Log.i(TAG, "Obtendo itens ...");
+            }
+
+            cursor.close();
+            return item;
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+
+            cursor.close();
+            return null;
+        }
+    }
+
+
+    /**
+     * Obtem todos os registros de transações dentro do banco de dados.
+     *
+     * @return uma lista do tipo Transaction.
+     */
+    public List<Item> getAllOrdened(int opc) {
+        String query = null;
+        List<Item> item = new ArrayList<>();
+
+        switch (opc) {
+            case R.id.nav_az:
+                query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.Nome ASC";
+                break;
+            case R.id.nav_za:
+                query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.NOME DESC";
+                break;
+            case R.id.nav_comprar:
+                query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.Status ASC";
+                break;
+            case R.id.nav_comprado:
+                query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.Status DESC";
+                break;
+            default:
+                query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade";
+                break;
+        }
 
         Cursor cursor = database.rawQuery(query, null);
         cursor.moveToFirst();

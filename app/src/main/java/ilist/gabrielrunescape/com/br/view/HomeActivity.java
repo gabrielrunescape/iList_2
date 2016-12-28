@@ -1,5 +1,7 @@
 package ilist.gabrielrunescape.com.br.view;
 
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import ilist.gabrielrunescape.com.br.adapter.ItemAdapter;
+import ilist.gabrielrunescape.com.br.model.SimpleDividerItemDecoration;
+
 import android.support.design.widget.FloatingActionButton;
 
 /**
@@ -28,6 +32,7 @@ import android.support.design.widget.FloatingActionButton;
  */
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ItemDAO dao;
+    private int opcaoNav = 0;
     private DrawerLayout drawer;
     private RecyclerView recyclerView;
     private ActionBarDrawerToggle toggle;
@@ -66,15 +71,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Log.i(TAG, "Criando e carregando elementos da ActivityView ...");
 
-        //recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        //swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.content_home);
         floatingButton = (FloatingActionButton) findViewById(R.id.floatingButton);
-        //RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
-        //recyclerView.setLayoutManager(mLayoutManager);
-        //recyclerView.setItemAnimator(new DefaultItemAnimator());
-        //recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
-        //swipeContainer.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.holo_orange_light);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
+        swipeContainer.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.holo_orange_light);
     }
 
     @Override
@@ -85,7 +90,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
         try {
-            //updateData();
+            updateData();
 
             floatingButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -112,10 +117,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id) {
             case R.id.nav_az:
+                opcaoNav = R.id.nav_az;
+                break;
             case R.id.nav_za:
+                opcaoNav = R.id.nav_za;
+                break;
             case R.id.nav_add:
+                Intent intent = new Intent(HomeActivity.this, ItemActivity.class);
+                startActivity(intent);
             case R.id.nav_comprar:
+                opcaoNav = R.id.nav_comprar;
+                break;
             case R.id.nav_comprado:
+                opcaoNav = R.id.nav_comprado;
+                break;
             default:
                 Toast.makeText(this, "Função não programada", Toast.LENGTH_LONG).show();
                 break;
@@ -123,6 +138,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        updateData();
 
         return true;
     }
@@ -135,7 +151,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             dao = new ItemDAO(this);
             dao.open(false);
 
-            final ItemAdapter adapter = new ItemAdapter(dao.getAll());
+            final ItemAdapter adapter = new ItemAdapter(dao.getAllOrdened(opcaoNav));
             adapter.notifyDataSetChanged();
 
             recyclerView.setAdapter(adapter);
@@ -145,7 +161,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     swipeContainer.setRefreshing(false);
 
                     adapter.clear();
-                    adapter.addAll(dao.getAll());
+                    adapter.addAll(dao.getAllOrdened(opcaoNav));
                 }
             });
         } catch (Exception ex) {
