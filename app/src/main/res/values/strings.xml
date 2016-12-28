@@ -6,15 +6,12 @@
     <string name="txt_status">Status do item</string>
     <string name="txt_nome">Item a ser comprado</string>
 
-    <!-- activity_home.xml -->
-    <string name="spinner_nav">Ordenar por</string>
-    <string-array name="spinner_ordem">
-        <item>A-Z</item>
-        <item>À comprar</item>
-        <item>Comprado</item>
-        <item>Quantidade</item>
-        <item>Z-A</item>
-    </string-array>
+    <!-- activity_home_drawer.xml -->
+    <string name="nav_az">A-Z</string>
+    <string name="nav_za">Z-A</string>
+    <string name="nav_add">Novo Item</string>
+    <string name="nav_comprar">À comprar</string>
+    <string name="nav_comprado">Comprado</string>
 
     <!-- activity_item.xml -->
     <string name="et_nome">Nome do produto</string>
@@ -34,4 +31,7 @@
     <string name="et_observacao">Observações</string>
     <string name="et_preco">Preço do orçamento</string>
     <string name="et_estabelecimento">Descrição do estabelecimento</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_az"
+            android:icon="@drawable/ic_brightness_24dp"
+            android:title="@string/nav_az" />
+        <item
+            android:id="@+id/nav_comprar"
+            android:icon="@drawable/ic_brightness_24dp"
+            android:title="@string/nav_comprar" />
+        <item
+            android:id="@+id/nav_comprado"
+            android:icon="@drawable/ic_brightness_24dp"
+            android:title="@string/nav_comprado" />
+        <item
+            android:id="@+id/nav_za"
+            android:icon="@drawable/ic_brightness_24dp"
+            android:title="@string/nav_za" />
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_add"
+                android:icon="@drawable/ic_add_24dp"
+                android:title="@string/nav_add" />
+        </menu>
+    </item>
+
+</menu>
