@@ -6,7 +6,17 @@
     <string name="txt_status">Status do item</string>
     <string name="txt_nome">Item a ser comprado</string>
 
-    <!-- activity_item -->
+    <!-- activity_home.xml -->
+    <string name="spinner_nav">Ordenar por</string>
+    <string-array name="spinner_ordem">
+        <item>A-Z</item>
+        <item>À comprar</item>
+        <item>Comprado</item>
+        <item>Quantidade</item>
+        <item>Z-A</item>
+    </string-array>
+
+    <!-- activity_item.xml -->
     <string name="et_nome">Nome do produto</string>
     <string name="et_quantidade">Quantidade</string>
     <string name="btn_orcamento">Novo orçamento</string>

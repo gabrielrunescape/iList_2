@@ -29,7 +29,7 @@
         android:layout_gravity="bottom|end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_anchor="@id/recycler_view"
         app:srcCompat="@drawable/ic_add_24dp"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior="ilist.gabrielrunescape.com.br.model.HideOnScroll"/>
 </android.support.design.widget.CoordinatorLayout>

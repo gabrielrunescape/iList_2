@@ -6,8 +6,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/item_background"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:textSize="16sp"

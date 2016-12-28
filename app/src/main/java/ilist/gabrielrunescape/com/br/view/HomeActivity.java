@@ -13,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import ilist.gabrielrunescape.com.br.adapter.ItemAdapter;
 import android.support.design.widget.FloatingActionButton;
+import ilist.gabrielrunescape.com.br.model.SimpleDividerItemDecoration;
 
 /**
  * Cria e exibe todos os elementos (views) necessários na tela inicial (HomeActivity).
@@ -47,6 +48,7 @@ public class HomeActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         swipeContainer.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.holo_orange_light);
     }
 
