@@ -111,13 +111,14 @@ public class ItemDAO {
 
         try {
             values.put("Nome", i.getNome());
+            values.put("Comprado", i.getComprado());
             values.put("Quantidade", i.getQuantidade());
             values.put("Status", i.getStatus().getID());
             values.put("Unidade", i.getUnidade().getID());
 
             Log.i(TAG, "Inserindo item ... ");
             long id = database.insert("`Item`", null, values);
-            String query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade WHERE I.ID = " + id;
+            String query = "SELECT I.ID, I.Nome, I.Quantidade, I.Comprado, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade WHERE I.ID = " + id;
 
             Cursor cursor = database.rawQuery(query , null);
             cursor.moveToFirst();
@@ -127,8 +128,9 @@ public class ItemDAO {
             item.setID(cursor.getInt(0));
             item.setNome(cursor.getString(1));
             item.setQuantidade(cursor.getInt(2));
-            item.setStatus(new Status(cursor.getInt(3), cursor.getString(4)));
-            item.setUnidade(new Unidade(cursor.getInt(5), cursor.getString(6), cursor.getString(7)));
+            item.setComprado(cursor.getInt(3));
+            item.setStatus(new Status(cursor.getInt(4), cursor.getString(5)));
+            item.setUnidade(new Unidade(cursor.getInt(6), cursor.getString(7), cursor.getString(8)));
 
             cursor.close();
 
@@ -153,13 +155,14 @@ public class ItemDAO {
 
         try {
             values.put("Nome", i.getNome());
+            values.put("Comprado", i.getComprado());
             values.put("Quantidade", i.getQuantidade());
             values.put("Status", i.getStatus().getID());
             values.put("Unidade", i.getUnidade().getID());
 
             Log.i(TAG, "Alterando item ... ");
             database.update("`Item`", values, "ID = " + i.getID(), null);
-            String query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade WHERE I.ID = " + i.getID();
+            String query = "SELECT I.ID, I.Nome, I.Quantidade, I.Comprado, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade WHERE I.ID = " + i.getID();
 
             Cursor cursor = database.rawQuery(query , null);
             cursor.moveToFirst();
@@ -169,8 +172,9 @@ public class ItemDAO {
             item.setID(cursor.getInt(0));
             item.setNome(cursor.getString(1));
             item.setQuantidade(cursor.getInt(2));
-            item.setStatus(new Status(cursor.getInt(3), cursor.getString(4)));
-            item.setUnidade(new Unidade(cursor.getInt(5), cursor.getString(6), cursor.getString(7)));
+            item.setComprado(cursor.getInt(3));
+            item.setStatus(new Status(cursor.getInt(4), cursor.getString(5)));
+            item.setUnidade(new Unidade(cursor.getInt(6), cursor.getString(7), cursor.getString(8)));
 
             cursor.close();
 
@@ -191,7 +195,7 @@ public class ItemDAO {
      */
     public List<Item> getAll() {
         List<Item> item = new ArrayList<>();
-        String query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade";
+        String query = "SELECT I.ID, I.Nome, I.Quantidade, I.Comprado, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade";
 
         Cursor cursor = database.rawQuery(query, null);
         cursor.moveToFirst();
@@ -203,8 +207,9 @@ public class ItemDAO {
                 i.setID(cursor.getInt(0));
                 i.setNome(cursor.getString(1));
                 i.setQuantidade(cursor.getInt(2));
-                i.setStatus(new Status(cursor.getInt(3), cursor.getString(4)));
-                i.setUnidade(new Unidade(cursor.getInt(5), cursor.getString(6), cursor.getString(7)));
+                i.setComprado(cursor.getInt(3));
+                i.setStatus(new Status(cursor.getInt(4), cursor.getString(5)));
+                i.setUnidade(new Unidade(cursor.getInt(6), cursor.getString(7), cursor.getString(8)));
 
                 item.add(i);
                 cursor.moveToNext();
@@ -234,19 +239,19 @@ public class ItemDAO {
 
         switch (opc) {
             case R.id.nav_az:
-                query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.Nome ASC";
+                query = "SELECT I.ID, I.Nome, I.Quantidade, I.Comprado, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.Nome ASC";
                 break;
             case R.id.nav_za:
-                query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.NOME DESC";
+                query = "SELECT I.ID, I.Nome, I.Quantidade, I.Comprado, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.NOME DESC";
                 break;
             case R.id.nav_comprar:
-                query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.Status ASC";
+                query = "SELECT I.ID, I.Nome, I.Quantidade, I.Comprado, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.Status ASC";
                 break;
             case R.id.nav_comprado:
-                query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.Status DESC";
+                query = "SELECT I.ID, I.Nome, I.Quantidade, I.Comprado, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade ORDER BY I.Status DESC";
                 break;
             default:
-                query = "SELECT I.ID, I.Nome, I.Quantidade, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade";
+                query = "SELECT I.ID, I.Nome, I.Quantidade, I.Comprado, S.ID AS `Status`, S.Descricao AS `Descriçao`, U.ID AS `Unidade`, U.Descricao, U.Abreviacao FROM `Item` I INNER JOIN `Status` S ON S.ID = I.Status INNER JOIN `Unidade` U ON U.ID = I.Unidade";
                 break;
         }
 
@@ -260,8 +265,9 @@ public class ItemDAO {
                 i.setID(cursor.getInt(0));
                 i.setNome(cursor.getString(1));
                 i.setQuantidade(cursor.getInt(2));
-                i.setStatus(new Status(cursor.getInt(3), cursor.getString(4)));
-                i.setUnidade(new Unidade(cursor.getInt(5), cursor.getString(6), cursor.getString(7)));
+                i.setComprado(cursor.getInt(3));
+                i.setStatus(new Status(cursor.getInt(4), cursor.getString(5)));
+                i.setUnidade(new Unidade(cursor.getInt(6), cursor.getString(7), cursor.getString(8)));
 
                 item.add(i);
                 cursor.moveToNext();

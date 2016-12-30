@@ -1,6 +1,7 @@
 package ilist.gabrielrunescape.com.br.view;
 
-import android.text.method.HideReturnsTransformationMethod;
+import java.text.DecimalFormat;
+import java.util.List;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.app.AlertDialog;
 import android.widget.EditText;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.widget.ArrayAdapter;
 import android.content.DialogInterface;
 import ilist.gabrielrunescape.com.br.R;
@@ -21,6 +24,14 @@ import ilist.gabrielrunescape.com.br.object.Item;
 import ilist.gabrielrunescape.com.br.object.Status;
 import ilist.gabrielrunescape.com.br.object.Unidade;
 import ilist.gabrielrunescape.com.br.dao.UnidadeDAO;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import ilist.gabrielrunescape.com.br.dao.OrcamentoDAO;
+import ilist.gabrielrunescape.com.br.object.Orcamento;
+import android.text.method.HideReturnsTransformationMethod;
+import ilist.gabrielrunescape.com.br.model.DialogOrcamento;
+import ilist.gabrielrunescape.com.br.adapter.OrcamentoAdapter;
+import ilist.gabrielrunescape.com.br.model.SimpleDividerItemDecoration;
 
 /**
  * É uma extensora da classe Activity(AppCompatActivity) que realiza funções de criar, inicializar
@@ -34,12 +45,12 @@ public class ItemActivity extends AppCompatActivity {
     private UnidadeDAO dao;
     private Spinner spinner;
     private EditText et_Nome;
-    private Button btn_orcamento;
-    /*private List<Orcamento> itens;
-    private OrcamentoDAO orcamento;*/
+    private List<Orcamento> itens;
+    private OrcamentoDAO orcamento;
     private EditText et_Quantidade;
     private RecyclerView recyclerView;
     private ArrayAdapter<Unidade> adapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     private static String TAG = ItemActivity.class.getSimpleName();
 
     @Override
@@ -53,14 +64,21 @@ public class ItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item);
 
         dao = new UnidadeDAO(this);
+        orcamento = new OrcamentoDAO(this);
 
         et_Nome = (EditText) findViewById(R.id.et_nome);
         spinner = (Spinner) findViewById(R.id.spinner_unidade);
-        btn_orcamento = (Button) findViewById(R.id.btn_orcamento);
-        et_Quantidade = (EditText) findViewById(R.id.et_quantidade);
+        et_Quantidade = (EditText) findViewById(R.id.et_Quantidade);
+        mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView = (RecyclerView) findViewById(R.id.recycler_orcamento);
 
+        recyclerView.setActivated(true);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
+
         dao.open(false);
+        orcamento.open(false);
         Log.i(TAG, "Método onCreate()");
         et_Quantidade.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
     }
@@ -70,8 +88,10 @@ public class ItemActivity extends AppCompatActivity {
      * (Re)carrega todos os elementos da view após criar, pausar ou destruir a ActivityView.
      */
     protected void onResume() {
-        dao.open(false);
         super.onResume();
+
+        dao.open(false);
+        orcamento.open(false);
 
         try {
             Log.i(TAG, "Método onResume()");
@@ -205,12 +225,6 @@ public class ItemActivity extends AppCompatActivity {
 
     protected void loadViews() {
         try {
-            /*final FragmentManager support = getFragmentManager();
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-
-            recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());*/
-
             if (getIntent().getSerializableExtra("Item") != null) {
                 int position = 0;
                 Item i = (Item) getIntent().getSerializableExtra("Item");
@@ -223,31 +237,22 @@ public class ItemActivity extends AppCompatActivity {
                 }
 
                 et_Nome.setText(i.getNome());
-                et_Quantidade.setText(i.getQuantidade() + "");
                 spinner.setSelection(position);
+                et_Quantidade.setText(i.getQuantidade() + "");
 
-                /*OrcamentoAdapter idapter = new OrcamentoAdapter(itens);
-                recyclerView.setAdapter(idapter);*/
+                refreshRecyclerView(i);
             } else {
                 recyclerView.setVisibility(View.INVISIBLE);
-                btn_orcamento.setVisibility(View.INVISIBLE);
             }
-
-            /*btn_orcamento.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        Item i = (Item) getIntent().getSerializableExtra("Item");
-
-                        DialogFragment dialog = new DialogOrcamento().newInstance("Novo orçamento", i.getID());
-                        dialog.show(support, "ItemActivity");
-                    } catch (Exception ex) {
-                        Log.e(TAG, ex.getMessage());
-                    }
-                }
-            });*/
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
         }
+    }
+
+    private void refreshRecyclerView(Item item) {
+        itens = orcamento.getAllFromItens(item);
+
+        OrcamentoAdapter idapter = new OrcamentoAdapter(itens);
+        recyclerView.setAdapter(idapter);
     }
 }

@@ -1,7 +1,5 @@
 package ilist.gabrielrunescape.com.br.view;
 
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
@@ -18,10 +16,11 @@ import ilist.gabrielrunescape.com.br.dao.ItemDAO;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import ilist.gabrielrunescape.com.br.adapter.ItemAdapter;
-import ilist.gabrielrunescape.com.br.model.SimpleDividerItemDecoration;
-
 import android.support.design.widget.FloatingActionButton;
+import ilist.gabrielrunescape.com.br.model.SimpleDividerItemDecoration;
 
 /**
  * Cria e exibe todos os elementos (views) necessários na tela inicial (HomeActivity).
@@ -41,6 +40,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static String TAG = HomeActivity.class.getSimpleName();
 
     @Override
+    /**
+     * Ao pressionar o botão para ser retornado.
+     */
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -111,6 +113,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
+    /**
+     * Define uma escolha para MenuItem que foi clicado no Navigation Drawer.
+     *
+     * @param item MenuItem escolhido (clicado).
+     * @return Verdadeiro.
+     */
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -151,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             dao = new ItemDAO(this);
             dao.open(false);
 
-            final ItemAdapter adapter = new ItemAdapter(dao.getAllOrdened(opcaoNav));
+            final ItemAdapter adapter = new ItemAdapter(dao.getAllOrdened(opcaoNav), getFragmentManager());
             adapter.notifyDataSetChanged();
 
             recyclerView.setAdapter(adapter);

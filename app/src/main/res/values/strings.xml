@@ -25,12 +25,19 @@
 
     <!-- list_orcamento.xml -->
     <string name="txt_preco">R$ 0,00</string>
+    <string name="txt_quantidade">000</string>
     <string name="txt_descricao">Descrição breve</string>
 
     <!-- dialog_orcamento.xml -->
     <string name="et_observacao">Observações</string>
     <string name="et_preco">Preço do orçamento</string>
     <string name="et_estabelecimento">Descrição do estabelecimento</string>
+
+    <!-- menu_bottom_sheet.xml -->
+    <string name="btm_buy">Comprar</string>
+    <string name="btm_edit">Editar</string>
+    <string name="btm_insert">Novo item</string>
+    <string name="btm_delete">Apagar</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

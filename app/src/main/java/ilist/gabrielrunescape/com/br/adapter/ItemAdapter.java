@@ -4,6 +4,7 @@ import java.util.List;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.app.FragmentManager;
 import android.view.LayoutInflater;
 import ilist.gabrielrunescape.com.br.R;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import ilist.gabrielrunescape.com.br.object.Item;
  */
 public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     private List<Item> listItens;
+    private FragmentManager support;
     private static String TAG = ItemAdapter.class.getSimpleName();
 
     /**
@@ -26,8 +28,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
      *
      * @param lista ArrayList serializado com Item.
      */
-    public ItemAdapter(List<Item> lista) {
-        listItens = lista;
+    public ItemAdapter(List<Item> lista, FragmentManager support) {
+        this.listItens = lista;
+        this.support = support;
     }
 
     /**
@@ -55,22 +58,27 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     public void onBindViewHolder(ItemHolder holder, int position) {
         try {
             Item item = listItens.get(position);
+            String status = item.getStatus().getDescrição() + " - " + item.getComprado() + " " + item.getUnidade().getAbreviação();
 
             holder.item = item;
             holder.adapter = this;
-            holder.status.setText(item.getStatus().getDescrição());
+            holder.support = support;
+            holder.status.setText(status);
             holder.nome.setText(item.getQuantidade() + " x " + item.getNome());
 
-            switch (holder.status.getText().toString()) {
-                case "À comprar":
+            switch (item.getStatus().getID()) {
+                case 1:
                     holder.status.setTextColor(holder.status.getResources().getColor(R.color.colourDanger));
                     break;
-                case "Orçamento feito":
+                case 2:
                     holder.status.setTextColor(holder.status.getResources().getColor(R.color.colourWarning));
                     break;
-                case "Comprado":
-                default:
+                case 3:
                     holder.status.setTextColor(holder.status.getResources().getColor(R.color.colourSuccess));
+                    break;
+                case 4:
+                default:
+                    holder.status.setTextColor(holder.status.getResources().getColor(R.color.colourInformation));
                     break;
             }
         } catch (Exception ex) {
@@ -106,6 +114,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
         notifyDataSetChanged();
     }
 
+    /**
+     * Remove o Item da lista.
+     *
+     * @param item Item a ser removido.
+     */
     public void removeItem(Item item) {
         int position = listItens.indexOf(item);
 

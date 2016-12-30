@@ -2,17 +2,20 @@ package ilist.gabrielrunescape.com.br.adapter;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 import android.content.Intent;
 import android.widget.TextView;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import ilist.gabrielrunescape.com.br.R;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import com.cocosw.bottomsheet.BottomSheet;
 import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.Snackbar;
 import ilist.gabrielrunescape.com.br.dao.ItemDAO;
 import ilist.gabrielrunescape.com.br.object.Item;
 import ilist.gabrielrunescape.com.br.view.ItemActivity;
+import ilist.gabrielrunescape.com.br.model.DialogOrcamento;
 
 /**
  * Carrega os itens básicos para criar os ItemView da RecycleView.
@@ -25,6 +28,7 @@ public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickL
     public Item item;
     public ItemAdapter adapter;
     public TextView nome, status;
+    public FragmentManager support;
     private static String TAG = ItemHolder.class.getSimpleName();
 
     /**
@@ -72,47 +76,33 @@ public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickL
      * @param view Item do RecyclerView pressionado.
      */
     public boolean onLongClick(final View view) {
-        int position = getAdapterPosition();
-        Log.i(TAG, String.format("O item nº %1$d foi pressionado!", position));
+        return new BottomSheet.Builder(view.getContext(), R.style.BottomSheet_Dialog).sheet(R.menu.menu_bottom_sheet) .listener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(view.getContext(), ItemActivity.class);
 
-        try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-            builder.setTitle("Escolha uma ação");
+                switch (which) {
+                    case R.id.btm_buy:
+                        DialogFragment dFragment = new DialogOrcamento().newInstance("Nova compra", item);
+                        dFragment.show(support, "ItemActivity");
 
-            String[] options = new String[] {"Apagar", "Editar", "Inserir"};
-            view.setPressed(true);
+                        break;
+                    case R.id.btm_edit:
+                        intent.putExtra("Item", item);
 
-            builder.setItems(options, new DialogInterface.OnClickListener() {
-                /**
-                 * Ao clicar em um dos itens, encaminha para uma Intent especifica da ação.
-                 *
-                 * @param dialog AlertDialog.Builder utilizado.
-                 * @param which  Posição do item clicado.
-                 */
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(view.getContext(), ItemActivity.class);
-
-                    switch (which) {
-                        case 0:
-                            confirmDelete(view);
-                            break;
-                        case 1:
-                            intent.putExtra("Item", item);
-
-                            view.getContext().startActivity(intent);
-                        case 2:
-                            view.getContext().startActivity(intent);
-                            break;
-                    }
+                        view.getContext().startActivity(intent);
+                    case R.id.btm_insert:
+                        view.getContext().startActivity(intent);
+                        break;
+                    case R.id.btm_delete:
+                        confirmDelete(view);
+                        break;
+                    default:
+                        Log.i(TAG, "Função não programada!");
+                        break;
                 }
-            });
-
-            return builder.show().isShowing();
-        } catch (Exception ex) {
-            Log.e(TAG, ex.getMessage());
-
-            return false;
-        }
+            }
+        }).show().isShowing();
     }
 
     /**

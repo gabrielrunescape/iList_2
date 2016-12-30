@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/btm_delete"
+        android:title="@string/btm_delete"
+        android:icon="@drawable/ic_check_24dp" />
+    <item
+        android:id="@+id/btm_buy"
+        android:title="@string/btm_buy"
+        android:icon="@drawable/ic_check_24dp" />
+    <item
+        android:id="@+id/btm_edit"
+        android:title="@string/btm_edit"
+        android:icon="@drawable/ic_check_24dp" />
+    <item
+        android:id="@+id/btm_insert"
+        android:title="@string/btm_insert"
+        android:icon="@drawable/ic_check_24dp" />
+</menu>

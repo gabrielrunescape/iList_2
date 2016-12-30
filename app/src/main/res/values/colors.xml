@@ -6,5 +6,6 @@
     <color name="colourPrimary">#E71722</color>
     <color name="colourWarning">#F0AD4E</color>
     <color name="colourSuccess">#5CB85C</color>
+    <color name="colourInformation">#5BC0DE</color>
     <color name="colourPrimaryDark">#D0151F</color>
 </resources>

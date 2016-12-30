@@ -4,6 +4,10 @@
         <item name="colorPrimary">@color/colourPrimary</item>
         <item name="colorPrimaryDark">@color/colourPrimaryDark</item>
     </style>
+    
+    <style name="Mobilis" parent="Theme.AppCompat.Light.DarkActionBar">
+
+    </style>
 
     <style name="Djezzy.NoActionBar">
         <item name="windowActionBar">false</item>

@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class Item implements Serializable {
     private int ID;
     private String nome;
+    private int comprado;
     private Status status;
     private int quantidade;
     private Unidade unidade;
@@ -21,6 +22,15 @@ public class Item implements Serializable {
      */
     public Item() {
 
+    }
+
+    /**
+     * Construtor com paramêtros.
+     *
+     * @param ID Código identificador.
+     */
+    public Item(int ID) {
+        this.ID = ID;
     }
 
     /**
@@ -38,6 +48,38 @@ public class Item implements Serializable {
         this.status = status;
         this.unidade = unidade;
         this.quantidade = quantidade;
+    }
+
+    /**
+     * Construtor com paramêtros.
+     *
+     * @param ID Código identificador.
+     * @param nome Nome do Item.
+     * @param status Status do Item
+     * @param quantidade Quantidade.
+     * @param unidade Unidade do Item.
+     */
+    public Item(int ID, String nome, Status status, int quantidade, int comprado, Unidade unidade) {
+        this.ID = ID;
+        this.nome = nome;
+        this.status = status;
+        this.unidade = unidade;
+        this.comprado = comprado;
+        this.quantidade = quantidade;
+    }
+
+    /**
+     * @return Quantidade que já foi comprada.
+     */
+    public int getComprado() {
+        return comprado;
+    }
+
+    /**
+     * @param comprado Define quantidade já comprada.
+     */
+    public void setComprado(int comprado) {
+        this.comprado = comprado;
     }
 
     /**
@@ -117,8 +159,8 @@ public class Item implements Serializable {
      * @return String do objeto no formato JSON.
      */
     public String toString() {
-        String _return = "Item {\n\tID: %d,\n\tNome: %s,\n\tStatus: %s,\n\tQuantidade: %d,\n\tUnidade: %s\n}";
+        String _return = "Item {\n\tID: %d,\n\tNome: %s,\n\tStatus: %s,\n\tQuantidade: %d,\n\tComprado: %d,\n\tUnidade: %s\n}";
 
-        return String.format(_return, ID, nome, status.toString().replace("Status ", ""), quantidade, unidade.toStringJSON().replace("Unidade ", ""));
+        return String.format(_return, ID, nome, status.toString().replace("Status ", ""), quantidade, comprado, unidade.toStringJSON().replace("Unidade ", ""));
     }
 }
