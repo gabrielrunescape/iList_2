@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/activity_report"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context="ilist.gabrielrunescape.com.br.view.ReportActivity" >
+
+    <TextView
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_margin="16dp"
+        android:id="@+id/label_titulo"
+        android:text="@string/label_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TableLayout
+        android:shrinkColumns="*"
+        android:stretchColumns="*"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <TableRow
+            android:layout_column="3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/label_parcialmente"
+                android:textColor="@color/colourWarning"
+                android:text="@string/label_parcialmente" />
+
+            <TextView
+                android:id="@+id/label_comprados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_comprados"
+                android:textColor="@color/colourSuccess" />
+
+            <TextView
+                android:id="@+id/label_exceco"
+                android:layout_width="wrap_content"
+                android:text="@string/label_exceco"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colourInformation" />
+        </TableRow>
+
+        <TableRow
+            android:layout_column="3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_parcialmente" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_comprado" />
+
+            <TextView
+                android:id="@+id/txt_exceco"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_column="3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_preco_parcialmente" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_preco_comprado" />
+
+            <TextView
+                android:id="@+id/txt_preco_exceco"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_margin="16dp"
+        android:id="@+id/label_resumo"
+        android:text="@string/label_resumo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_report"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

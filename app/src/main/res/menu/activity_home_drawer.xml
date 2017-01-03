@@ -25,6 +25,11 @@
                 android:id="@+id/nav_add"
                 android:icon="@drawable/ic_add_24dp"
                 android:title="@string/nav_add" />
+
+            <item
+                android:id="@+id/nav_report"
+                android:icon="@drawable/ic_add_24dp"
+                android:title="@string/nav_report" />
         </menu>
     </item>
 

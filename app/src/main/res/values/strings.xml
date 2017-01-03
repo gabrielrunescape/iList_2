@@ -12,12 +12,20 @@
     <string name="nav_add">Novo Item</string>
     <string name="nav_comprar">À comprar</string>
     <string name="nav_comprado">Comprado</string>
+    <string name="nav_report">Relatórios</string>
 
     <!-- activity_item.xml -->
     <string name="et_nome">Nome do produto</string>
     <string name="et_quantidade">Quantidade</string>
     <string name="btn_orcamento">Novo orçamento</string>
     <string name="spinner_unidade">Escolha uma unidade</string>
+
+    <!-- activity_report.xml -->
+    <string name="label_exceco">Em exceço</string>
+    <string name="label_comprados">Comprados</string>
+    <string name="label_parcialmente">À comprar</string>
+    <string name="label_resumo">Resumo dos itens</string>
+    <string name="label_titulo">Relatório de compra</string>
 
     <!-- menu_toolbar.xml -->
     <string name="menu_check">Gravar</string>

@@ -7,7 +7,7 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <!-- Dimens for list_orcamento.xml -->
-    <item format="float" type="dimen" name="txt_preco">0.35</item>
-    <item format="float" type="dimen" name="txt_descricao">0.55</item>
-    <item format="float" type="dimen" name="txt_quantidade">0.1</item>
+    <item name="txt_preco" format="float" type="dimen">0.35</item>
+    <item name="txt_descricao" format="float" type="dimen">0.55</item>
+    <item name="txt_quantidade" format="float" type="dimen">0.1</item>
 </resources>

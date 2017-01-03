@@ -121,6 +121,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      */
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        //Intent intent;
         int id = item.getItemId();
 
         switch (id) {
@@ -131,13 +132,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 opcaoNav = R.id.nav_za;
                 break;
             case R.id.nav_add:
-                Intent intent = new Intent(HomeActivity.this, ItemActivity.class);
-                startActivity(intent);
+                //intent = new Intent(HomeActivity.this, ItemActivity.class);
+                //startActivity(intent);
+                break;
             case R.id.nav_comprar:
                 opcaoNav = R.id.nav_comprar;
                 break;
             case R.id.nav_comprado:
                 opcaoNav = R.id.nav_comprado;
+                break;
+            case R.id.nav_report:
+                Intent intent = new Intent(HomeActivity.this, ReportActivity.class);
+                startActivity(intent);
                 break;
             default:
                 Toast.makeText(this, "Função não programada", Toast.LENGTH_LONG).show();
