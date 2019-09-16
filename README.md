@@ -1,0 +1,3 @@
+# iList2
+
+Volta ao projeto de desenvolvimento do aplicativo para criação de listas e outros utilitários...
